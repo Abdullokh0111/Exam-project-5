@@ -1,0 +1,684 @@
+{
+	"info": {
+		"_postman_id": "d5c2f1a8-1b5c-4e1b-a9ce-9cb4e5f5a3d9",
+		"name": "Blog Platform API",
+		"description": "Postman collection for Blog Platform API with user authentication, blogs, posts and comments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.token) {",
+									"    pm.collectionVariables.set(\"authToken\", jsonData.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"Password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						},
+						"description": "Login user and get authentication token"
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication endpoints"
+		},
+		{
+			"name": "Blogs",
+			"item": [
+				{
+					"name": "Create Blog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"My First Blog\",\n  \"description\": \"This is my first blog on this platform\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/blogs/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"create"
+							]
+						},
+						"description": "Create a new blog"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Blogs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/get-my-blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"get-my-blogs"
+							]
+						},
+						"description": "Get blogs created by the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Joined Blogs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/get-my-joined-blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"get-my-joined-blogs"
+							]
+						},
+						"description": "Get blogs that the authenticated user has joined"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/get-blog-info/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"get-blog-info",
+								"1"
+							]
+						},
+						"description": "Get detailed information about a specific blog"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blog",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Blog Title\",\n  \"description\": \"Updated blog description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/blogs/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update a blog (only the owner can update)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blog",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/delete/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete a blog (only the owner can delete)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Blogs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/search?query=Tech",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Tech"
+								}
+							]
+						},
+						"description": "Search blogs by title"
+					},
+					"response": []
+				},
+				{
+					"name": "Join Blog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/join-blog/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"join-blog",
+								"2"
+							]
+						},
+						"description": "Join a blog"
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Blog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/leave-blog/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"leave-blog",
+								"2"
+							]
+						},
+						"description": "Leave a blog (owner cannot leave their own blog)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/get-users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"get-users",
+								"1"
+							]
+						},
+						"description": "Get users who have joined a blog"
+					},
+					"response": []
+				}
+			],
+			"description": "Blog management endpoints"
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"First Post\",\n  \"content\": \"This is the content of my first post.\",\n  \"blog_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"create"
+							]
+						},
+						"description": "Create a new post (only the blog owner can create posts)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts/get-all/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"get-all",
+								"1"
+							]
+						},
+						"description": "Get all posts from a specific blog"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts/get-by-id/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"get-by-id",
+								"1"
+							]
+						},
+						"description": "Get a post by ID (view count increments with each request)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Post Title\",\n  \"content\": \"Updated content of the post.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update a post (only the blog owner can update)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts/delete/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete a post (only the blog owner can delete)"
+					},
+					"response": []
+				},
+				{
+					"name": "Sort Posts By Date",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts/sort-by-date/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"sort-by-date",
+								"1"
+							]
+						},
+						"description": "Get blog posts sorted by creation date (newest first)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/posts/1/get-comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"get-comments"
+							]
+						},
+						"description": "Get all comments for a specific post"
+					},
+					"response": []
+				}
+			],
+			"description": "Post management endpoints"
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This is a comment on the post.\",\n  \"post_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comments/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"create"
+							]
+						},
+						"description": "Create a new comment on a post"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"Updated comment content.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comments/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update a comment (only the comment author can update)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/comments/delete/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete a comment (only the comment author can delete)"
+					},
+					"response": []
+				}
+			],
+			"description": "Comment management endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
